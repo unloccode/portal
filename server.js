@@ -1,48 +1,28 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
 const app = express();
 
-var bodyParser = require('body-parser');
+var corsOptions = {
+    origin: "http://localhost:8081"
+};
 
-global.__basedir = __dirname;
-
-const db = require('./config/db.config.js');
-
-const User = db.User;
-
-let router = require('./router/router.js');
-
-const cors = require('cors');
-const corsOptions = {
-    origin: 'http://localhost:4200',
-    optionsSuccessStatus: 200
-}
 app.use(cors(corsOptions));
 
+//parse requests of content-type - application/json
 app.use(bodyParser.json());
-app.use(express.static('resources'));
-app.use('/', router);
-
-//create server
-const server = app.listen(8080, function(){
-    let host = server.address().address
-    let port = server.address().port
-    console.log("App listening at http://%s:%s", host, port);
+//parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({extended:true}));
+//simple route
+app.get("/", (req, res)=>{
+    res.json({message: "Luemens"});
 });
 
-//init some data
-//write data to db
-db.sequelize.sync({force:true}).then(()=>{
-    console.log('Drop and Resync with { force: true }');
-    User.sync().then(()=>{
-        const users = [
-            {
-                username: 'alafsasa',
-                email: 'alafsasa@gmail.com',
-                password: 'password'
-            }
-        ]
-        for(let i=0; i<users.length; i++){
-            User.create(users[i]);
-        }
-    })
-})
+//set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, ()=>{
+    console.log(`Server is running on port ${PORT}.`);
+});
+
+//body-parser helps to parse the request and create the req.body object

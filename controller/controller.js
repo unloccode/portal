@@ -1,6 +1,7 @@
 const db = require('../config/db.config.js');
 const User = db.User;
 
+//create user
 exports.createUser = (req, res) => {
     let user = {};
     try{
