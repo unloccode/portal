@@ -26,3 +26,26 @@ app.listen(PORT, ()=>{
 });
 
 //body-parser helps to parse the request and create the req.body object
+
+//init some data
+const db = require("./models");
+const Role = db.Role;
+
+db.sequelize.sync({force: true}).then(()=>{
+    console.log('Drop and Resync Database');
+});
+
+function inits(){
+    Role.create({
+        id: 1,
+        name: "user"
+    });
+    Role.create({
+        id: 2,
+        name: "moderator"
+    });
+    Role.create({
+        id: 3,
+        name: "admin"
+    });
+}
