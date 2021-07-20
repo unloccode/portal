@@ -19,6 +19,10 @@ app.get("/", (req, res)=>{
     res.json({message: "Luemens"});
 });
 
+//routes
+require('./router/auth.routes')(app);
+require('./router/user.routes')(app);
+
 //set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, ()=>{
@@ -28,11 +32,12 @@ app.listen(PORT, ()=>{
 //body-parser helps to parse the request and create the req.body object
 
 //init some data
-const db = require("./models");
+const db = require("./config/db.config");
 const Role = db.Role;
 
 db.sequelize.sync({force: true}).then(()=>{
     console.log('Drop and Resync Database');
+    inits();
 });
 
 function inits(){

@@ -1,4 +1,4 @@
-const db = require('../models');
+const db = require('../config/db.config.js');
 const Roles = db.Roles;
 const User = db.User;
 
