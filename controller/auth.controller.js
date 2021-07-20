@@ -38,7 +38,7 @@ exports.signin = (req, res) => {
     User.findOne({
         where: {username: req.body.username}
     }).then(user=>{
-        if(!user){
+        if(!user){            
             return res.status(404).send({message: "User Not found."});
         }
         var passwordIsValid = bcyrpt.compareSync(
